@@ -1,0 +1,8 @@
+<button id="themeToggle" class="button px-3 py-2 rounded border border-white/10 hover:border-[var(--crt-green)] text-sm" aria-label="Theme toggle">🌗</button>
+<script>
+  const btn = document.getElementById('themeToggle');
+  btn?.addEventListener('click', ()=>{
+    const html = document.documentElement; const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next); try{ localStorage.setItem('theme', next);}catch(e){}
+  });
+</script>

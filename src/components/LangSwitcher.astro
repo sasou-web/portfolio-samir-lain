@@ -1,0 +1,13 @@
+---
+const { current = 'fr' } = Astro.props; // 'fr' | 'en' | 'ar'
+const langs = [
+  { code: 'fr', label: 'FR', dir: 'ltr' },
+  { code: 'en', label: 'EN', dir: 'ltr' },
+  { code: 'ar', label: 'AR', dir: 'rtl' }
+];
+---
+<nav aria-label="Language switch" class="flex items-center gap-2">
+  {langs.map(l => (
+    <a href={`/${l.code}/`} class={`px-2 py-1 rounded border ${current===l.code ? 'bg-[var(--accent)] text-white' : 'border-white/10 text-white/70 hover:text-white'}`} aria-current={current===l.code? 'page' : undefined}>{l.label}</a>
+  ))}
+</nav>

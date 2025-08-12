@@ -1,0 +1,11 @@
+---
+// Redirige vers /fr/ (site statique)
+const target = '/fr/';
+---
+<html>
+  <head>
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+  </head>
+  <body>Redirecting…</body>
+</html>

@@ -1,0 +1,199 @@
+---
+import Base from '../../layouts/Base.astro';
+import SEO from '../../components/SEO.astro';
+import LangSwitcher from '../../components/LangSwitcher.astro';
+import ThemeToggle from '../../components/ThemeToggle.astro';
+import StackMarquee from '../../components/StackMarquee.astro';
+
+const { lang } = Astro.params as { lang: 'fr'|'en'|'ar' };
+const messages = await import(`../../../i18n/${lang}.json`).then(m=>m.default);
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+const works = await Astro.glob('../../../content/works/*.mdx');
+const projects = await Astro.glob('../../../content/projects/*.mdx');
+const games = await Astro.glob('../../../content/games/*.md');
+
+const NAME = 'MOGHRABI SAMIR';
+const TAGLINE_FR = 'Étudiant passionné en systèmes & réseaux — entre câbles et conscience numérique.';
+const TAGLINE_EN = 'Passionate student in systems & networks — between cables and digital consciousness.';
+const TAGLINE_AR = 'طالب شغوف بأنظمة الشبكات — بين الكابلات والوعي الرقمي.';
+const TAGLINE = lang==='fr'?TAGLINE_FR:lang==='en'?TAGLINE_EN:TAGLINE_AR;
+
+// Helpers
+const t = (k:string)=> messages[k] ?? k;
+---
+<Base lang={lang} dir={dir} title="MOGHRABI SAMIR" description={messages.metaDescription}>
+  <fragment slot="head"><SEO title="MOGHRABI SAMIR" description={messages.metaDescription} /></fragment>
+
+  <!-- Header / Nav fixed -->
+  <header class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-[var(--bg)]/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href={`/${lang}/`} class="font-display text-xl tracking-wide text-[var(--crt-green)]">{NAME}</a>
+      <div class="flex items-center gap-3">
+        <LangSwitcher current={lang} />
+        <ThemeToggle />
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="min-h-screen flex items-center relative pt-24">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(106,76,147,.25),transparent_40%),radial-gradient(circle_at_70%_60%,rgba(163,255,143,.08),transparent_40%)]"></div>
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+      <div class="space-y-6">
+        <h1 class="font-display text-6xl sm:text-7xl leading-none">
+          <span class="glitch" data-text={NAME}>{NAME}</span>
+        </h1>
+        <p class="text-[var(--paper)]/90 font-mono">{TAGLINE}</p>
+        <div class="flex gap-3 flex-wrap">
+          <a href="https://x.com/samirsyrie" class="button inline-flex items-center gap-2 px-4 py-2 rounded bg-[var(--accent)] hover:opacity-90 focus-visible:outline-offset-2">⚡ {t('followMe')} X</a>
+          <a href="https://github.com/sasou-web" class="button inline-flex items-center gap-2 px-4 py-2 rounded bg-black/50 border border-white/10 hover:border-[var(--crt-green)]">{t('followMe')} GitHub</a>
+          <a href="https://steamcommunity.com/id/sasou" class="button inline-flex items-center gap-2 px-4 py-2 rounded bg-black/50 border border-white/10 hover:border-[var(--crt-green)]">{t('followMe')} Steam</a>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="card p-6">
+          <p class="text-sm text-white/70">{messages.heroBlurb}</p>
+          <ul class="mt-4 grid grid-cols-2 gap-2 text-xs text-white/60">
+            <li>Linux</li><li>Docker</li><li>Ansible</li><li>CI/CD</li><li>VMware</li><li>LXC</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <StackMarquee />
+  </section>
+
+  <!-- Works -->
+  <section id="works" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="font-display text-3xl mb-6">{t('works')}</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {works.map(({ Content, file, frontmatter }) => (
+        <article class="card overflow-hidden group">
+          <div class="aspect-[16/10] bg-black/40 flex items-center justify-center">
+            {/* Image placeholder or data URL */}
+            {frontmatter.image ? (
+              <img src={frontmatter.image} alt={`${frontmatter.title} — ${frontmatter.type}`} class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition" loading="lazy"/>
+            ) : (
+              <div class="w-full h-full grid place-items-center text-white/40 font-mono">no-image</div>
+            )}
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="text-lg font-semibold">{frontmatter.title}</h3>
+            <p class="text-xs text-white/60">{frontmatter.type} • {frontmatter.year}</p>
+            <Content />
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Games: Cyberpunk 2077 -->
+  <section id="games" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="font-display text-3xl mb-6">{t('games')}</h2>
+    {games.map(({ Content, frontmatter }) => (
+      <article class="card p-6 grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2">
+          <h3 class="text-2xl font-semibold">{frontmatter.title}</h3>
+          <p class="text-sm text-white/60">{t('platform')}: PC • {t('year')}: 2020+ • {t('genre')}: RPG</p>
+          <Content />
+        </div>
+        <div class="md:col-span-1 self-center">
+          <div class="text-5xl font-display text-[var(--crt-green)]">9.2<span class="text-xl text-white/60">/10</span></div>
+          <p class="text-xs text-white/60 mt-2">{t('personalScore')}</p>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <!-- Studies timeline -->
+  <section id="studies" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="font-display text-3xl mb-6">{t('studies')}</h2>
+    <ol class="relative border-s border-white/10 ps-6 space-y-8">
+      <li>
+        <div class="absolute -start-3 mt-1 w-5 h-5 rounded-full bg-[var(--accent)]"></div>
+        <h3 class="font-semibold">ESGI – 4ᵉ année Systèmes & Réseaux</h3>
+        <p class="text-sm text-white/60">{t('datesPlaceholder')}</p>
+      </li>
+      <li>
+        <div class="absolute -start-3 mt-1 w-5 h-5 rounded-full bg-[var(--crt-green)]"></div>
+        <h3 class="font-semibold">3ᵉ année Management & Gestion de projet</h3>
+        <p class="text-sm text-white/60">{t('datesPlaceholder')}</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="font-display text-3xl mb-6">{t('projects')}</h2>
+    <div class="grid sm:grid-cols-2 gap-6">
+      {projects.map(({ Content, frontmatter }) => (
+        <article class="card p-5 space-y-3">
+          <h3 class="text-xl font-semibold">{frontmatter.title}</h3>
+          <p class="text-sm text-white/70">{frontmatter.pitch}</p>
+          <p class="text-xs text-white/60"><b>{t('role')}:</b> {frontmatter.role}</p>
+          <p class="text-xs text-white/60"><b>{t('stack')}:</b> {frontmatter.stack}</p>
+          <p class="text-xs text-white/60"><b>{t('result')}:</b> {frontmatter.result}</p>
+          <div class="flex gap-3 pt-1">
+            {frontmatter.repo && <a class="button px-3 py-1 rounded border border-white/10 hover:border-[var(--crt-green)] text-sm" href={frontmatter.repo} target="_blank" rel="noreferrer">{t('viewRepo')}</a>}
+            {frontmatter.demo && <a class="button px-3 py-1 rounded bg-[var(--accent)] text-sm" href={frontmatter.demo} target="_blank" rel="noreferrer">{t('viewDemo')}</a>}
+          </div>
+          <div class="prose prose-invert max-w-none">
+            <Content />
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="font-display text-3xl mb-6">{t('skills')}</h2>
+    <div class="grid md:grid-cols-3 gap-4">
+      {[
+        { name:'CI/CD (Jenkins, GitLab CI)', level:'avancé' },
+        { name:'Ansible', level:'avancé' },
+        { name:'Docker', level:'avancé' },
+        { name:'LXC', level:'intermédiaire' },
+        { name:'VMware', level:'intermédiaire' },
+        { name:'Linux (Debian/Ubuntu/CentOS)', level:'avancé' },
+        { name:'Python', level:'intermédiaire' },
+        { name:'Bash', level:'avancé' },
+        { name:'Excel-VBA', level:'intermédiaire' },
+        { name:'Git', level:'avancé' },
+        { name:'Jira / Trello', level:'intermédiaire' },
+        { name:'Nagios / Zabbix', level:'avancé' },
+        { name:'Apache / Nginx / HAProxy / Tomcat', level:'intermédiaire' },
+        { name:'AWS EC2/S3 (notions)', level:'intermédiaire' },
+        { name:'HTML/CSS/JS', level:'intermédiaire' }
+      ].map((s)=> (
+        <div class="card p-4 flex items-center justify-between"><span>{s.name}</span><span class="text-xs text-white/60">{s.level}</span></div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Contact + Map -->
+  <section id="contact" class="max-w-6xl mx-auto px-4 py-20">
+    <h2 class="font-display text-3xl mb-6">{t('contact')}</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card p-5 space-y-2">
+        <p><b>Email</b>: <a class="underline" href="mailto:samir@sasou.fr">samir@sasou.fr</a> — <b>Tel</b>: +33 7 76 98 85 54</p>
+        <p><b>X</b>: <a class="underline" href="https://x.com/samirsyrie">@samirsyrie</a> — <b>Discord</b>: 963sasou</p>
+        <p><b>GitHub</b>: <a class="underline" href="https://github.com/sasou-web">sasou-web</a> — <b>Steam</b>: <a class="underline" href="https://steamcommunity.com/id/sasou">sasou</a></p>
+        <a class="button inline-block mt-2 px-4 py-2 rounded bg-[var(--accent)]" href="/CV.pdf" download>{t('downloadCV')}</a>
+      </div>
+      <div class="card overflow-hidden">
+        <div id="map" style="height: 320px"></div>
+      </div>
+    </div>
+    <p class="text-xs text-white/50 mt-3">© {new Date().getFullYear()} MOGHRABI SAMIR — {t('availableRemote')}</p>
+  </section>
+
+  <!-- Leaflet CDN (no tracking) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    const map = L.map('map').setView([46.7, 2.3], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+    L.marker([48.85,2.35]).addTo(map).bindPopup('Disponible à distance').openPopup();
+  </script>
+</Base>

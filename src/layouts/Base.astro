@@ -1,0 +1,37 @@
+---
+const { title = 'MOGHRABI SAMIR', description = 'Portfolio – Systèmes & Réseaux', lang = 'fr', dir = 'ltr' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang={lang} dir={dir} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" />
+    <slot name="head" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap" rel="stylesheet" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MOGHRABI SAMIR" />
+    <meta property="og:description" content="Portfolio de Moghrabi Samir — étudiant passionné en systèmes & réseaux. Œuvres et jeux favoris, parcours ESGI, projets DevOps (CI/CD, Ansible, Docker), compétences et contacts. Ambiance Serial Experiments Lain." />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MOGHRABI SAMIR" />
+    <meta name="twitter:description" content="Portfolio — Systèmes & Réseaux — vibes Lain" />
+    <meta name="twitter:image" content="/og.png" />
+    <link rel="stylesheet" href="/src/styles/globals.css" />
+    <style> :root { --shadow: 0 20px 60px rgba(0,0,0,.45); } </style>
+    <script>
+      // Theme init (system preference)
+      (()=>{ try{ const ls = localStorage.getItem('theme'); if(ls){ document.documentElement.setAttribute('data-theme', ls); } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches){ document.documentElement.setAttribute('data-theme','light'); } }catch(e){} })();
+    </script>
+  </head>
+  <body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <slot />
+  </body>
+</html>

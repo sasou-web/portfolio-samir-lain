@@ -1,0 +1,10 @@
+---
+const badges = ['Linux','Docker','Ansible','CI/CD','GitLab CI','Jenkins','LXC','VMware','Nginx','HAProxy','Zabbix','Nagios','Python','Bash','Git','AWS EC2/S3'];
+---
+<div class="stack-marquee border-y border-white/5 bg-[var(--surface)]/60">
+  <div class="flex gap-6 py-3 animate-marquee will-change-transform" aria-label="Stack">
+    {[...badges, ...badges].map((b, i) => (
+      <span class="px-3 py-1 rounded-full bg-black/30 border border-white/10 text-white/80 text-xs font-mono" aria-hidden={i>=badges.length? 'true': 'false'}>{b}</span>
+    ))}
+  </div>
+</div>

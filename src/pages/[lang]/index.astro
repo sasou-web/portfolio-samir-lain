@@ -1,4 +1,21 @@
 ---
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'fr' } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'ar' } }
+  ];
+}
+
+import BaseLayout from '../../layouts/Base.astro';
+const { lang } = Astro.params;
+---
+
+<BaseLayout lang={lang}>
+  <!-- ton contenu de page ici -->
+</BaseLayout>
+
+---
 import Base from '../../layouts/Base.astro';
 import SEO from '../../components/SEO.astro';
 import LangSwitcher from '../../components/LangSwitcher.astro';

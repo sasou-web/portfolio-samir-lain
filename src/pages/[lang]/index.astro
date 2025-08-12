@@ -7,15 +7,6 @@ export async function getStaticPaths() {
   ];
 }
 
-import BaseLayout from '../../layouts/Base.astro';
-const { lang } = Astro.params;
----
-
-<BaseLayout lang={lang}>
-  <!-- ton contenu de page ici -->
-</BaseLayout>
-
----
 import Base from '../../layouts/Base.astro';
 import SEO from '../../components/SEO.astro';
 import LangSwitcher from '../../components/LangSwitcher.astro';
@@ -39,6 +30,7 @@ const TAGLINE = lang==='fr'?TAGLINE_FR:lang==='en'?TAGLINE_EN:TAGLINE_AR;
 // Helpers
 const t = (k:string)=> messages[k] ?? k;
 ---
+
 <Base lang={lang} dir={dir} title="MOGHRABI SAMIR" description={messages.metaDescription}>
   <fragment slot="head"><SEO title="MOGHRABI SAMIR" description={messages.metaDescription} /></fragment>
 
@@ -87,7 +79,6 @@ const t = (k:string)=> messages[k] ?? k;
       {works.map(({ Content, file, frontmatter }) => (
         <article class="card overflow-hidden group">
           <div class="aspect-[16/10] bg-black/40 flex items-center justify-center">
-            {/* Image placeholder or data URL */}
             {frontmatter.image ? (
               <img src={frontmatter.image} alt={`${frontmatter.title} — ${frontmatter.type}`} class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition" loading="lazy"/>
             ) : (
@@ -104,7 +95,7 @@ const t = (k:string)=> messages[k] ?? k;
     </div>
   </section>
 
-  <!-- Games: Cyberpunk 2077 -->
+  <!-- Games -->
   <section id="games" class="max-w-6xl mx-auto px-4 py-20">
     <h2 class="font-display text-3xl mb-6">{t('games')}</h2>
     {games.map(({ Content, frontmatter }) => (
@@ -122,7 +113,7 @@ const t = (k:string)=> messages[k] ?? k;
     ))}
   </section>
 
-  <!-- Studies timeline -->
+  <!-- Studies -->
   <section id="studies" class="max-w-6xl mx-auto px-4 py-20">
     <h2 class="font-display text-3xl mb-6">{t('studies')}</h2>
     <ol class="relative border-s border-white/10 ps-6 space-y-8">
@@ -188,7 +179,7 @@ const t = (k:string)=> messages[k] ?? k;
     </div>
   </section>
 
-  <!-- Contact + Map -->
+  <!-- Contact -->
   <section id="contact" class="max-w-6xl mx-auto px-4 py-20">
     <h2 class="font-display text-3xl mb-6">{t('contact')}</h2>
     <div class="grid md:grid-cols-2 gap-6">
@@ -205,9 +196,9 @@ const t = (k:string)=> messages[k] ?? k;
     <p class="text-xs text-white/50 mt-3">© {new Date().getFullYear()} MOGHRABI SAMIR — {t('availableRemote')}</p>
   </section>
 
-  <!-- Leaflet CDN (no tracking) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
     const map = L.map('map').setView([46.7, 2.3], 5);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
